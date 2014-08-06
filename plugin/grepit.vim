@@ -100,5 +100,6 @@ function! s:GrepItInCurrentLanguage(word)
 endfunction
 
 command! -nargs=1 GrepIt call <SID>GrepItInCurrentLanguage(<f-args>)
+command! -nargs=1 GrepItQuote call <SID>GrepItInCurrentLanguage(<args>)
 command! -nargs=+ GrepItInExts call <SID>GrepItInExtensions(<f-args>)
 command! -nargs=+ GrepItInLangs call <SID>GrepItInLanguages(<f-args>)
