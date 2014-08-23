@@ -1,7 +1,7 @@
-"if exists("g:grepit_loaded")
-"  finish
-"endif
-"let g:grepit_loaded=1
+if exists("g:grepit_loaded") && !exists("g:grepit_debug")
+  finish
+endif
+let g:grepit_loaded=1
 
 function! s:CfgHightlightSearch()
 	if exists('g:grepit_hlsearch')
@@ -83,7 +83,7 @@ function! s:GetFindStrCmd(needle, extensions)
 	return l:commandline
 endfunction
 
-function! s:GrepItInExtensions(needle, extensions)
+function! s:GrepItInExtensions(extensions, needle)
 	let l:params = ""
 	if has('win32')
 		let l:params = s:GetFindStrParams(a:needle, a:extensions)
@@ -98,31 +98,55 @@ function! s:GrepItInExtensions(needle, extensions)
     let l:commandline = "grep!"
   endif
 
-  echom "Searhing for " . shellescape(a:needle) . " (" . a:extensions . ")"
+  let l:extlist = join(split(a:extensions, ","), "|")
+  echo "Searhing for" shellescape(a:needle) "in *.(" . l:extlist . ")"
 	silent execute l:commandline . " " . l:params
 
 	if s:CfgHightlightSearch()
 		let @/ = a:needle
 		set hlsearch
 	endif
+  if len(getqflist()) == 0
+    echo "Nothing found"
+    return
+  endif
   if s:CfgOpenQuickFix()
     copen
   endif
 endfunction
 
-function! s:GrepItInLanguages(needle, languages)
+function! s:GrepItExtCmd(extensions, ...)
+  let l:needle = join(a:000)
+  if strlen(l:needle) == 0
+    echoerr "usage: GrepItExt <extensions> <needle>"
+    return
+  endif
+  call s:GrepItInExtensions(a:extensions, l:needle)
+endfunction
+
+function! s:GrepItLangCmd(languages, ...)
+  let l:needle = join(a:000)
+  if strlen(l:needle) == 0
+    echoerr "usage: GrepItLang <langs> <needle>"
+    return
+  endif
 	let l:lang_map = s:CfgLangeMap()
 	let l:languages = split(a:languages, ",")
 	let l:extensions = s:GetExtensions(l:languages, l:lang_map)
-	call s:GrepItInExtensions(a:needle, l:extensions)
+	call s:GrepItInExtensions(l:extensions, l:needle)
 endfunction
 
-function! s:GrepItInCurrentLanguage(needle)
+function! s:GrepItCmd(...)
+  let l:needle = join(a:000)
+  if strlen(l:needle) == 0
+    echoerr "usage: GrepIt <needle>"
+    return
+  endif
 	let l:lang_map = s:CfgLangeMap()
 	let l:extension = tolower(expand("%:e"))
 	let l:language = s:GetLanguage(l:extension, l:lang_map)
 	let l:extensions = s:GetExtensions([l:language], l:lang_map)
-	call s:GrepItInExtensions(a:needle, l:extensions)
+	call s:GrepItInExtensions(l:extensions, l:needle)
 endfunction
 
 function! GrepItOperator(type)
@@ -140,7 +164,6 @@ function! GrepItOperator(type)
   call s:GrepItInCurrentLanguage(l:needle)
 endfunction
 
-command! -nargs=1 GrepIt call <SID>GrepItInCurrentLanguage(<f-args>)
-command! -nargs=1 GrepItQuote call <SID>GrepItInCurrentLanguage(<args>)
-command! -nargs=+ GrepItInExts call <SID>GrepItInExtensions(<f-args>)
-command! -nargs=+ GrepItInLangs call <SID>GrepItInLanguages(<f-args>)
+command! -nargs=+ GrepIt call <SID>GrepItCmd(<f-args>)
+command! -nargs=+ GrepItExt call <SID>GrepItExtCmd(<f-args>)
+command! -nargs=+ GrepItLang call <SID>GrepItLangCmd(<f-args>)
