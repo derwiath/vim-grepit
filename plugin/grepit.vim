@@ -161,7 +161,7 @@ function! GrepItOperator(type)
   let l:needle = @@
   let @@ = l:old_register_value
 
-  call s:GrepItInCurrentLanguage(l:needle)
+  call s:GrepItCmd(l:needle)
 endfunction
 
 command! -nargs=+ GrepIt call <SID>GrepItCmd(<f-args>)
