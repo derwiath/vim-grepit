@@ -74,7 +74,7 @@ function! s:GetGrepParams(needle, extensions)
   return l:commandline . " " . shellescape(a:needle ) . " ."
 endfunction
 
-function! s:GetFindStrCmd(needle, extensions)
+function! s:GetFindStrParams(needle, extensions)
   let l:commandline = "/S " . shellescape(a:needle)
   for l:extension in split(a:extensions, ",")
     let l:commandline = l:commandline . " *." . l:extension
