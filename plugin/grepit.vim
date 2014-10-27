@@ -111,7 +111,7 @@ function! s:GrepItInExtensions(extensions, needle)
     return
   endif
   if s:CfgOpenQuickFix()
-    copen
+    botright copen " Quickfix always occupies the entire bottom of the window
   endif
 endfunction
 
