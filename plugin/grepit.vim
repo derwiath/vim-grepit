@@ -31,7 +31,7 @@ let s:lang_map = {
 function! s:CfgLangeMap()
   let l:lang_map = s:lang_map
   if exists("g:grepit_lang_map")
-    extend(l:lang_map, g:grepit_lang_map)
+    call extend(l:lang_map, g:grepit_lang_map)
   endif
   return l:lang_map
 endfunction
