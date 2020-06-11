@@ -106,7 +106,11 @@ function! s:GrepItInExtensions(extensions, needle)
   endif
 
   let l:extlist = join(split(a:extensions, ","), "|")
-  echo "Searhing for" shellescape(a:needle) "in *.(" . l:extlist . ")"
+  if g:grepit_debug
+    echo l:commandline . " " . l:params
+  else
+    echo "Grepping for" shellescape(a:needle) "in *.(" . l:extlist . ") using " . &grepprg
+  endif
 
   if s:CfgPretend()
     return
