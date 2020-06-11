@@ -78,7 +78,7 @@ function! s:GetGrepParams(needle, extensions)
     let l:commandline = l:commandline . " --include=*." . l:extension
   endfor
 
-  return l:commandline . " " . shellescape(a:needle ) . " ."
+  return l:commandline . " " . shellescape(a:needle) . " ."
 endfunction
 
 function! s:GetFindStrParams(needle, extensions)
