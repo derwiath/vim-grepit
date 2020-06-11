@@ -24,6 +24,13 @@ function! s:CfgOpenQuickFix()
   return 1
 endfunction
 
+function! s:CfgPretend()
+  if exists('g:grepit_pretend')
+    return g:grepit_pretend
+  endif
+  return 0
+endfunction
+
 let s:lang_map = {
   \ "cpp" : "h,inl,cpp,cc,c,m,mm" ,
   \ }
@@ -100,6 +107,11 @@ function! s:GrepItInExtensions(extensions, needle)
 
   let l:extlist = join(split(a:extensions, ","), "|")
   echo "Searhing for" shellescape(a:needle) "in *.(" . l:extlist . ")"
+
+  if s:CfgPretend()
+    return
+  endif
+
   silent execute l:commandline . " " . l:params
 
   if s:CfgHightlightSearch()
