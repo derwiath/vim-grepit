@@ -92,7 +92,7 @@ endfunction
 
 function! s:GrepItInExtensions(extensions, needle)
   let l:params = ""
-  if has('win32')
+  if stridx(&grepprg, "findstr") == 0
     let l:params = s:GetFindStrParams(a:needle, a:extensions)
   else
     let l:params = s:GetGrepParams(a:needle, a:extensions)
