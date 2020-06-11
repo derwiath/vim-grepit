@@ -24,6 +24,13 @@ function! s:CfgOpenQuickFix()
   return 1
 endfunction
 
+function! s:CfgDebug()
+  if exists('g:grepit_debug')
+    return g:grepit_debug
+  endif
+  return 0
+endfunction
+
 function! s:CfgPretend()
   if exists('g:grepit_pretend')
     return g:grepit_pretend
@@ -122,7 +129,7 @@ function! s:GrepItInExtensions(extensions, needle)
   endif
 
   let l:extlist = join(split(a:extensions, ","), "|")
-  if g:grepit_debug
+  if s:CfgDebug()
     echo l:commandline . " " . l:params
   else
     echo "Grepping for" shellescape(a:needle) "in *.(" . l:extlist . ") using " . &grepprg
