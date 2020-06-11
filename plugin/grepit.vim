@@ -90,10 +90,26 @@ function! s:GetFindStrParams(needle, extensions)
   return l:commandline
 endfunction
 
+function! s:GetRipgrepParams(needle, extensions)
+  let l:commandline = ""
+  if match(&grepprg, "-n") == -1
+    let l:commandline = "-n"
+  endif
+
+  let l:globs=[]
+  for l:extension in split(a:extensions, ",")
+    let l:globs += ["-g *." . l:extension]
+  endfor
+
+  return l:commandline . " " . join(l:globs, " ") . " -- " . shellescape(a:needle)
+endfunction
+
 function! s:GrepItInExtensions(extensions, needle)
   let l:params = ""
   if stridx(&grepprg, "findstr") == 0
     let l:params = s:GetFindStrParams(a:needle, a:extensions)
+  elseif stridx(&grepprg, "rg") == 0
+    let l:params = s:GetRipgrepParams(a:needle, a:extensions)
   else
     let l:params = s:GetGrepParams(a:needle, a:extensions)
   endif
