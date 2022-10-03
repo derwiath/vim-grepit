@@ -2,7 +2,7 @@
 
 Author: Andreas Andersson - [andreas@neoboid.com](mailto:andreas@neoboid.com)
 
-GrepIt is a simple wrapper around grep and findstr that helps
+GrepIt is a simple wrapper around Vims internal grep command that helps
 you grep in all files for a language. For example if the current
 file is a .h file, and you execute:
 
@@ -10,11 +10,11 @@ file is a .h file, and you execute:
 :GrepIt hello
 ```
 
-All files ending in h,cpp,cc,c,mm will be grepped for the string "hello". This
+All files ending in `h`,`cpp`,`cc`,`c`,`mm` will be grepped for the string "hello". This
 saves you typing a lot of `--include=*.xyz` for each search for something.
 
 But, the real magic happens when you make a keyboard short to search for
-the word under the cursor. See Configuration section
+the word under the cursor. See [Configuration](#configuration) below.
 
 ## Installation
 
