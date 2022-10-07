@@ -82,7 +82,7 @@ function! s:GetGrepParams(needle, extensions)
   let l:commandline = "-R"
 
   for l:extension in split(a:extensions, ",")
-    let l:commandline = l:commandline . " --include=*." . l:extension
+    let l:commandline = l:commandline . " --include=\\*." . l:extension
   endfor
 
   return l:commandline . " " . shellescape(a:needle) . " ."
@@ -105,7 +105,7 @@ function! s:GetRipgrepParams(needle, extensions)
 
   let l:globs=[]
   for l:extension in split(a:extensions, ",")
-    let l:globs += ["-g *." . l:extension]
+    let l:globs += ["-g \\*." . l:extension]
   endfor
 
   return l:commandline . " " . join(l:globs, " ") . " -- " . shellescape(a:needle)
