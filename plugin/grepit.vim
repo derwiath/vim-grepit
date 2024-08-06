@@ -98,10 +98,7 @@ function! s:GetFindStrParams(needle, extensions)
 endfunction
 
 function! s:GetRipgrepParams(needle, extensions)
-  let l:commandline = ""
-  if match(&grepprg, "-n") == -1
-    let l:commandline = "-n"
-  endif
+  let l:commandline = "--vimgrep -uu"
 
   let l:globs=[]
   for l:extension in split(a:extensions, ",")
