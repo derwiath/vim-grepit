@@ -102,7 +102,7 @@ function! s:GetRipgrepParams(needle, extensions)
 
   let l:globs=[]
   for l:extension in split(a:extensions, ",")
-    let l:globs += ["-g \*." . l:extension]
+    let l:globs += ["-g '*." . l:extension . "'"]
   endfor
 
   return l:commandline . " " . join(l:globs, " ") . " -- " . shellescape(a:needle)
