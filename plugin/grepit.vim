@@ -101,11 +101,8 @@ function! s:GetRipgrepParams(needle, extensions)
   let l:commandline = "--vimgrep -uu"
 
   let l:globs=[]
-  for l:extension in split(a:extensions, ",")
-    let l:globs += ["-g '*." . l:extension . "'"]
-  endfor
 
-  return l:commandline . " " . join(l:globs, " ") . " -- " . shellescape(a:needle)
+  return l:commandline . " " . join(l:globs, " ") . " -e " . shellescape(a:needle) . " -- ./"
 endfunction
 
 function! s:GrepItInExtensions(extensions, needle)
