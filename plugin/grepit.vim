@@ -100,6 +100,10 @@ endfunction
 function! s:GetRipgrepParams(needle, extensions)
   let l:commandline = "--vimgrep -uu"
 
+  if exists("g:grepit_debug")
+    let l:commandline = l:commandline . " --debug --trace"
+  endif
+
   let l:globs=[]
 
   return l:commandline . " " . join(l:globs, " ") . " -e " . shellescape(a:needle) . " -- ./"
@@ -124,7 +128,7 @@ function! s:GrepItInExtensions(extensions, needle)
 
   let l:extlist = join(split(a:extensions, ","), "|")
   if s:CfgDebug()
-    echo l:commandline . " " . l:params
+    echo "cmd: " . l:commandline . " " . l:params
   else
     echo "Grepping for" shellescape(a:needle) "in *.(" . l:extlist . ") using " . &grepprg
   endif
